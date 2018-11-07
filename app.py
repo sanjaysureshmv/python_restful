@@ -7,26 +7,32 @@ app.config['MYSQL_PASSWORD'] = 'sanju'
 app.config['MYSQL_DB'] = 'flaskapp'
 mysql = MySQL(app)
 
+
+
 @app.route('/post', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        #Fetch the form data
+        # Fetch the form data
         MessageDetails = request.form
         message = MessageDetails['message']
         cur = mysql.connection.cursor()
-        cur.execute("INSERT INTO messages (message) VALUES (%s)",[message])
+        cur.execute("INSERT INTO messages (message) VALUES (%s)", [message])
         mysql.connection.commit()
         cur.close()
 
         return redirect('/view')
     return render_template('index.html')
+
+
 @app.route('/view')
 def view():
     cur = mysql.connection.cursor()
     resultValues = cur.execute("SELECT * FROM   messages")
     if resultValues > 0:
         Messages = cur.fetchall()
-        return render_template('messages.html',Messages=Messages)
+        return render_template('messages.html', Messages=Messages)
+
+
 @app.route('/search', methods=['GET', 'POST'])
 def search():
 
@@ -34,15 +40,24 @@ def search():
 
         SearchValue = request.form['searchField']
         print(SearchValue)
+        x = palindrome(SearchValue)
+        print(x)
+        #print (stringTest)
         cur = mysql.connection.cursor()
-        searchResult = cur.execute("SELECT * FROM messages WHERE message LIKE %s", ("%" + SearchValue + "%",))
+        searchResult = cur.execute(
+            "SELECT * FROM messages WHERE message LIKE %s", ("%" + SearchValue + "%",))
         if searchResult > 0:
             result = cur.fetchall()
             return render_template('search_result.html', result=result)
 
-        
     return render_template('search.html')
 
+def palindrome(search_value):
+    rev = search_value[::-1]
+    print(rev)
+    if (rev == search_value):
+        return 'Palindrome'
+    else:
+        return 'Not palindrome'
 if __name__ == '__main__':
     app.run(debug=True)
-
