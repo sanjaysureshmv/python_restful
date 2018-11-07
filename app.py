@@ -51,10 +51,24 @@ def search():
             return render_template('search_result.html', result=result)
 
     return render_template('search.html')
+@app.route('/delete', methods=['GET','POST'])
+def delete():
+    if request.method == 'POST':
+        DeleteMsg = request.form['delete_field']
+        cur = mysql.connection.cursor()
+        cur.execute("DELETE FROM messages WHERE message=%s",(DeleteMsg,))
+        mysql.connection.commit()
+        cur.close()
+
+        return redirect('/view')
+    return render_template('delete.html')
+
+
+
 
 def palindrome(search_value):
     rev = search_value[::-1]
-    print(rev)
+    #print(rev)
     if (rev == search_value):
         return 'Palindrome'
     else:
