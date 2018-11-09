@@ -7,7 +7,9 @@ app.config['MYSQL_PASSWORD'] = 'sanju'
 app.config['MYSQL_DB'] = 'flaskapp'
 mysql = MySQL(app)
 
-
+@app.route('/')
+def home():
+    return redirect('/view')
 
 @app.route('/post', methods=['GET', 'POST'])
 def index():
@@ -20,7 +22,7 @@ def index():
         mysql.connection.commit()
         cur.close()
 
-        return redirect('/view')
+        return redirect('/view', code=301)
     return render_template('index.html')
 
 
@@ -60,7 +62,7 @@ def delete():
         mysql.connection.commit()
         cur.close()
 
-        return redirect('/view')
+        return redirect('/view', code=301)
     return render_template('delete.html')
 
 
