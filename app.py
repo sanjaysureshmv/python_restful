@@ -12,7 +12,7 @@ def home():
     return redirect('/view')
 
 @app.route('/post', methods=['GET', 'POST'])
-def index():
+def post():
     if request.method == 'POST':
         # Fetch the form data
         MessageDetails = request.form
@@ -33,6 +33,8 @@ def view():
     if resultValues > 0:
         Messages = cur.fetchall()
         return render_template('messages.html', Messages=Messages)
+    else:
+        return "There are no existing messages to display"
 
 
 @app.route('/search', methods=['GET', 'POST'])
@@ -42,7 +44,6 @@ def search():
 
         SearchValue = request.form['searchField']
         x = palindrome(SearchValue)
-        #print (stringTest)
         cur = mysql.connection.cursor()
         searchResult = cur.execute(
             "SELECT * FROM messages WHERE message LIKE %s", ("%" + SearchValue + "%",))
@@ -53,20 +54,24 @@ def search():
             return render_template('search_result.html', result=result, check_palindrome=x)
         else:
             return render_template('search_not_found.html', message=SearchValue)
-
-
-
     return render_template('search.html')
+
 @app.route('/delete', methods=['GET','POST'])
 def delete():
     if request.method == 'POST':
         DeleteMsg = request.form['delete_field']
         cur = mysql.connection.cursor()
-        cur.execute("DELETE FROM messages WHERE message=%s",(DeleteMsg,))
+        no_row = cur.execute("DELETE FROM messages WHERE message=%s",(DeleteMsg,))
+        print(no_row)
         mysql.connection.commit()
+        if no_row > 0:
+            return render_template ('delete_found.html', delete_msg = DeleteMsg)
+        else:
+            return render_template('delete_not_found.html', delete_msg = DeleteMsg)
+
         cur.close()
 
-        return redirect('/view', code=301)
+        #return redirect('/view', code=301)
     return render_template('delete.html')
 
 

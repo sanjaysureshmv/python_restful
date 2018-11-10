@@ -26,7 +26,7 @@ resource "aws_instance" "PyApp" {
     type        = "ssh"
     user        = "ubuntu"
     host        = "${self.public_ip}"
-    private_key = "${file("~/Ubuntu16.04_backup/sanjaym_home/Downloads/devops.pem")}"
+    private_key = "${file("~/Ubuntu16.04_backup/sanjaym_home/Downloads/devops.pem")}"# make as variable
   }
 
    provisioner "remote-exec" {
