@@ -28,6 +28,12 @@
     repo: https://github.com/sanjaysureshmv/python_restful.git
     dest: "{{App_dir}}"
     clone: yes
+    
+- name : Ensure the app is started
+  shell: nohup python3 app.py &
+  args:
+    chdir: "{{App_dir}}"
+    executable: /bin/bash
 
       
 
