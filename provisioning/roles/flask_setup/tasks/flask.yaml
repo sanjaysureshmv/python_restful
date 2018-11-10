@@ -5,7 +5,7 @@
     state: directory
     path: "{{App_dir}}"
 
-- name: Install Python3 and pip3
+- name: Install necessary packages in server
   apt:
     name: "{{item}}"
     state: present
@@ -28,12 +28,13 @@
     repo: https://github.com/sanjaysureshmv/python_restful.git
     dest: "{{App_dir}}"
     clone: yes
-    
+
 - name : Ensure the app is started
   shell: nohup python3 app.py &
   args:
     chdir: "{{App_dir}}"
     executable: /bin/bash
+  
 
       
 
