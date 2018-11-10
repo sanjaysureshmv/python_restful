@@ -1,0 +1,2 @@
+[flask-app]
+52.25.123.36 ansible_user=ubuntu ansible_private_key_file=/home/sanjay/Ubuntu16.04_backup/sanjaym_home/Downloads/devops.pem

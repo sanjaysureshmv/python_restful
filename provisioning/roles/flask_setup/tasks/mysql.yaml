@@ -1,0 +1,39 @@
+---
+- name: Install MySQL and its dependencies
+  apt:
+      name: "{{item}}"
+      state: present
+  with_items:
+      - python-mysqldb
+      - mysql-server
+      - mysql-client
+      - mysql-common
+      - libmysqlclient-dev
+- name: ensure MySQL always starts
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+
+
+- name: Copy database dump file
+  copy:
+    src: "{{dump_file_name}}"
+    dest: /tmp
+
+
+
+
+
+- name: Restore database
+  mysql_db:
+    name: flaskapp
+    state: import
+    target: "/tmp/{{dump_file_name}}"
+
+- name: Create mysql user and assign privilege
+  mysql_user:
+    name: sanju
+    password: sanju
+    priv: flaskapp.*:ALL
+    state: present

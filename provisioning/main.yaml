@@ -1,0 +1,7 @@
+---
+- hosts: "{{hosts}}"
+  become: yes
+  become_method: sudo
+  gather_facts: no
+  roles:
+    - flask_setup
