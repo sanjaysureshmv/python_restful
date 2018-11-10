@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect
+from flask import Flask, render_template, render_template_string, request, redirect
 from flask_mysqldb import MySQL
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'localhost'
@@ -41,16 +41,20 @@ def search():
     if request.method == 'POST':
 
         SearchValue = request.form['searchField']
-        print(SearchValue)
         x = palindrome(SearchValue)
-        print(x)
         #print (stringTest)
         cur = mysql.connection.cursor()
         searchResult = cur.execute(
             "SELECT * FROM messages WHERE message LIKE %s", ("%" + SearchValue + "%",))
-        if searchResult > 0:
-            result = cur.fetchall()
-            return render_template('search_result.html', result=result)
+        result = cur.fetchall()
+        if searchResult > 0 and x == 'Palindrome':
+            return render_template('search_result.html', result=result, check_palindrome=x)
+        elif searchResult > 0 and x == 'Not palindrome':
+            return render_template('search_result.html', result=result, check_palindrome=x)
+        else:
+            return render_template('search_not_found.html', message=SearchValue)
+
+
 
     return render_template('search.html')
 @app.route('/delete', methods=['GET','POST'])
