@@ -20,13 +20,13 @@ resource "aws_instance" "PyApp" {
     Name = "Flask"
   }
 
-  #user_data = "${file("python.sh")}"
+  
 
   connection = {
     type        = "ssh"
     user        = "ubuntu"
     host        = "${self.public_ip}"
-    private_key = "${file("~/Ubuntu16.04_backup/sanjaym_home/Downloads/devops.pem")}"# make as variable
+    private_key = "${file(var.pem_key)}"
   }
 
    provisioner "remote-exec" {
@@ -36,7 +36,7 @@ resource "aws_instance" "PyApp" {
 
 
   provisioner "local-exec" {
-    command = "sleep=300; ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ec2.py -e hosts=tag_Name_${aws_instance.PyApp.tags.Name} -u ubuntu --private-key ../Ubuntu16.04_backup/sanjaym_home/Downloads/devops.pem  main.yaml"
+    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -i ec2.py -e hosts=tag_Name_${aws_instance.PyApp.tags.Name} -u ubuntu --private-key ${var.pem_key}  main.yaml"
   }
 }
 

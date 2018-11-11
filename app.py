@@ -18,11 +18,12 @@ def post():
         MessageDetails = request.form
         message = MessageDetails['message']
         cur = mysql.connection.cursor()
+        # insert the enetered text in to the db
         cur.execute("INSERT INTO messages (message) VALUES (%s)", [message])
         mysql.connection.commit()
         cur.close()
-
-        return redirect('/view', code=301)
+        # redirected to /view to see the posted text
+        return redirect('/view', code=302)
     return render_template('index.html')
 
 
@@ -71,7 +72,7 @@ def delete():
 
         cur.close()
 
-        #return redirect('/view', code=301)
+
     return render_template('delete.html')
 
 
@@ -79,10 +80,9 @@ def delete():
 
 def palindrome(search_value):
     rev = search_value[::-1]
-    #print(rev)
     if (rev == search_value):
         return 'Palindrome'
     else:
         return 'Not palindrome'
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0')

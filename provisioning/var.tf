@@ -11,7 +11,9 @@ variable "ami_id" {
     default = "ami-0e32ec5bc225539f5"
   
 }
-
+ variable "pem_key"{
+     default = "/home/sanjay/Ubuntu16.04_backup/sanjaym_home/Downloads/devops.pem"
+ }
 variable "compute" {
   default = "t2.micro"
 }
