@@ -1,0 +1,16 @@
+<html>
+<h2> The entered string is {{check_palindrome}} and it is present in db as following..</h2>    
+<table border="1">
+    {% for message in result %}
+    <tr>
+        <td>
+            {{message[0]}}
+        </td>
+        <td>
+            {{message[1]}}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+</html>
