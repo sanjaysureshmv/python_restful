@@ -21,17 +21,16 @@ Clone this repo to the local machine or any instance. Take the terraform directo
 module "module_name" {
   
   source             = "../../common/" #/path/to/terraform/directory
-  Region	     = "us-west-1"
-  ami_id	     = "ami-sample"
-  pem_key	     = "/path/to/pem/key"
+  Region	           = "us-west-1"
+  ami_id	           = "ami-sample"
+  pem_key	           = "/path/to/pem/key"
   compute            = "t2.large"
   key                = "pem_key"
   num_instance       = 1
   app_vpc            = "vpc_id"
   sg                 = "name of security group to be given"
   az                 = ["us-west-1a"]
-
- }
+}
 
 The vairables in the var.tf file present in this repo will be the input to the main.tf to be created.
 
